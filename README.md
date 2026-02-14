@@ -95,22 +95,25 @@ Kakao Notification API
 
 ---
 
-## 5. 기술 스택
+## 8. 개발 일정
 
-### Backend
-- Spring Boot 3.x
-- Spring Security
-- OAuth2
-- JWT
-- MySQL 8.0
-- Docker
+### Sprint 1
+- 프로젝트 초기 세팅
+- 로그인 구현
+- Android 앱(React Native) 기본 UI 및 인증 연동
+- 그룹 기능 API 및 앱 내 그룹 UX 구현
 
-### Frontend
-- React
-- TypeScript
-- React Native (Android)
+### Sprint 2
+- 일정 CRUD
+- 그룹 공유 기능
+- D-day 계산 로직
+- 푸시 알림(FCM) 연동 및 앱 알림 테스트
 
-### Notification
+### Sprint 3
+- Web 프론트엔드(React) 구현
+- Web과 앱의 기능 동기화 및 E2E 테스트
+
+---
 - Firebase Cloud Messaging (FCM)
 - Kakao 알림톡 API
 
