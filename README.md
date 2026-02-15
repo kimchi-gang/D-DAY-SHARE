@@ -1,8 +1,10 @@
 # D-DAY-SHARE
-“일정을 공유하고, 나에게 중요한 날의 D-day를 매일 카카오톡으로 알림 받자”
+> “일정을 공유하고, 나에게 중요한 날의 D-day를 매일 카카오톡으로 알림 받자”
 
+---
 
 # 📘 프로젝트 개발 문서
+
 ---
 
 ## 1. 프로젝트 개요
@@ -10,16 +12,25 @@
 ### 📌 프로젝트 명
 **D-DAY SHARE**
 
+### 🧩 프로젝트 구조
+- **Backend:** Java 17 + Spring Boot 3.x
+- **App:** Android Native (Kotlin + Jetpack Compose)
+- **DB:** MySQL
+- **Push:** FCM
+- **알림:** 카카오 알림톡
+
+---
+
 ### 📖 프로젝트 설명
 
 D-DAY SHARE는 스터디, 팀, 가족 등 **그룹 단위 사용자**가  
 각자의 중요한 일정을 이름별로 공유하고,  
 개인 설정에 따라 D-day 알림을 받을 수 있는 서비스입니다.
 
-기존 캘린더 서비스는 일정 공유는 가능하지만  
-- 누가 만든 일정인지 구분이 어렵고  
-- 알림이 개인화되어 있지 않으며  
-- D-day 중심 관리가 불편하다는 문제가 있습니다.
+기존 캘린더 서비스는  
+- 일정 공유는 가능하지만  
+- 작성자 구분이 명확하지 않고  
+- D-day 중심 관리 및 개인화 알림이 부족합니다.
 
 본 서비스는  
 **개인 일정 소유 + 그룹 공유 + 개인 맞춤 D-day 알림 구조**를 통해  
@@ -27,9 +38,9 @@ D-DAY SHARE는 스터디, 팀, 가족 등 **그룹 단위 사용자**가
 
 ---
 
-## 2. 핵심 기능 (최소 기능 목록 - MVP)
+## 2. 핵심 기능 (MVP)
 
-### 🧑 사용자 기능ㅉ
+### 🧑 사용자 기능
 
 - 소셜 로그인 (Google / GitHub)
 - 그룹 생성
@@ -38,88 +49,48 @@ D-DAY SHARE는 스터디, 팀, 가족 등 **그룹 단위 사용자**가
 - 그룹 캘린더에서 이름별 일정 조회
 - D-day 자동 계산 및 표시
 - D-day 기간 동안 매일 알림 발송
-- 알림 채널 선택 (카카오톡 / 모바일 푸시 / 이메일)
-
----
-
-### 🔔 알림 정책 (초기 버전)
-
-- D-day 기준 자동 계산
-- 중요한 날 전까지 매일 알림
-- 사용자별 알림 ON/OFF 가능
-- 알림 채널 선택 가능
+- 알림 채널 선택
   - 카카오 알림톡
   - Android 푸시 (FCM)
 
 ---
 
-## 3. MVP 범위
-
-### 🚀 목표
-
-그룹 기반 일정 공유 + D-day 알림 기능이 완전히 동작하는 최소 제품 구현
-
-### ✅ 포함 기능
-
-- OAuth2 로그인
-- 그룹 생성 / 초대 / 참여
-- 일정 CRUD
-- 그룹 공유 기능
-- D-day 계산 로직
-- Android 푸시 알림
-- 카카오 알림톡 연동
-
-### ❌ 제외 기능 (v2 이후)
-
-- 반복 일정
-- 그룹 공용 일정
-- 채팅 기능
-- 통계 기능
-- 웹 푸시
-
----
-
-## 4. 시스템 아키텍처
+## 3. 시스템 아키텍처
 
 ```
-Client (Web / Android)
+Android App (Kotlin)
         ↓
-Spring Boot API Server
+Spring Boot API Server (Java)
         ↓
 MySQL Database
         ↓
-Firebase Cloud Messaging
-        ↓
-Kakao Notification API
+FCM / Kakao Notification API
 ```
 
 ---
 
-## 8. 개발 일정
+## 4. 기술 스택
 
-### Sprint 1
-- 프로젝트 초기 세팅
-- 로그인 구현
-- Android 앱(React Native) 기본 UI 및 인증 연동
-- 그룹 기능 API 및 앱 내 그룹 UX 구현
+### 🖥 Backend
+- Java 17
+- Spring Boot 3.x
+- Spring Security
+- OAuth2 Client
+- JPA (Hibernate)
+- MySQL
+- Docker
 
-### Sprint 2
-- 일정 CRUD
-- 그룹 공유 기능
-- D-day 계산 로직
-- 푸시 알림(FCM) 연동 및 앱 알림 테스트
-
-### Sprint 3
-- Web 프론트엔드(React) 구현
-- Web과 앱의 기능 동기화 및 E2E 테스트
-
----
-- Firebase Cloud Messaging (FCM)
-- Kakao 알림톡 API
+### 📱 Android App
+- Kotlin
+- Jetpack Compose
+- MVVM Architecture
+- Retrofit (REST API 통신)
+- Hilt (DI)
+- FCM
 
 ---
 
-## 6. 데이터베이스 설계 (핵심 테이블)
+## 5. 데이터베이스 설계 (핵심 테이블)
 
 ### User
 - id
@@ -159,103 +130,114 @@ Kakao Notification API
 
 ---
 
-## 7. API 설계 (핵심)
+## 6. REST API 설계 (핵심)
+
+인증 방식:  
+`Authorization: Bearer <JWT>`
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| /auth/login/google | POST | Google 로그인 (OAuth callback/token 발급) |
+| /auth/login/google | POST | Google 로그인 |
 | /auth/login/github | POST | GitHub 로그인 |
-| /auth/logout | POST | 로그아웃 / 토큰 무효화 |
-| /users/me | GET | 현재 사용자 정보 조회 |
+| /users/me | GET | 현재 사용자 조회 |
 | /groups | POST | 그룹 생성 |
-| /groups | GET | 사용자가 속한 그룹 목록 조회 |
-| /groups/{groupId} | GET | 그룹 상세 조회 |
-| /groups/{groupId} | PUT | 그룹 정보 수정 |
-| /groups/{groupId} | DELETE | 그룹 삭제 (owner 권한) |
-| /groups/{groupId}/invite | POST | 초대 링크/초대 메일 발송 |
-| /groups/{groupId}/members | GET | 그룹 멤버 목록 조회 |
-| /groups/{groupId}/members | POST | 그룹에 사용자 초대/추가 |
-| /groups/{groupId}/members/{userId} | DELETE | 그룹에서 사용자 제거 |
-| /schedules | POST | 일정 생성 (개인 일정) |
-| /schedules | GET | 사용자(또는 그룹) 일정 목록 조회 (쿼리: groupId, from, to) |
-| /schedules/{scheduleId} | GET | 일정 상세 조회 |
+| /groups | GET | 내 그룹 목록 |
+| /groups/{groupId} | GET | 그룹 상세 |
+| /groups/{groupId}/members | GET | 멤버 조회 |
+| /schedules | POST | 일정 생성 |
+| /schedules | GET | 일정 조회 |
 | /schedules/{scheduleId} | PUT | 일정 수정 |
 | /schedules/{scheduleId} | DELETE | 일정 삭제 |
-| /schedules/{scheduleId}/share | POST | 일정 그룹 공유(연결) |
-| /notifications/settings | GET | 현재 사용자 알림 설정 조회 |
-| /notifications/settings | PUT | 알림 설정 업데이트 (채널, D-day ON/OFF 등) |
-| /notifications/send | POST | (관리용) 특정 사용자/그룹에 알림 즉시 전송 (관리자 또는 내부용) |
-| /devices | POST | 기기 등록(FCM 토큰 등록) |
-| /devices | GET | 등록된 기기 목록 조회 |
-| /devices/{deviceId} | DELETE | 기기 등록 해제 |
-| /internal/trigger-dday | POST | (시스템 내부) 스케줄러에서 호출 — 오늘 D-day 대상에 대해 알림 생성/발송 트리거 |
-
-
-Notes: 인증이 필요한 엔드포인트는 `Authorization: Bearer <JWT>` 형태 사용. 입력 검증, 페이로드 스펙은 API 문서에 상세 정의 예정.
+| /notifications/settings | GET | 알림 설정 조회 |
+| /notifications/settings | PUT | 알림 설정 수정 |
+| /devices | POST | FCM 토큰 등록 |
+| /internal/trigger-dday | POST | D-day 알림 트리거 (스케줄러용) |
 
 ---
 
-## 8. 개발 일정
+## 7. 개발 일정
 
 ### Sprint 1
-- 프로젝트 초기 세팅
-- 로그인 구현
-- 그룹 기능 구현
+- Spring Boot 초기 세팅 (Java)
+- OAuth2 로그인 구현
+- 그룹 기능 API 개발
 - ERD 확정
 
 ### Sprint 2
 - 일정 CRUD
-- 그룹 공유 기능
-- D-day 계산 로직
-- 푸시 알림 연동
+- 그룹 일정 공유 로직
+- D-day 계산 로직 구현
+- FCM 서버 연동
+
+### Sprint 3
+- Android 앱 기본 UI (Kotlin + Compose)
+- 로그인 연동
+- 그룹 / 일정 화면 구현
+- 푸시 알림 테스트
 
 ---
 
-## 9. 프로젝트 목표
+## 8. 프로젝트 목표
 
 - 그룹 단위 일정 공유의 불편함 해결
 - D-day 중심 알림 서비스 구현
 - Android 기반 실사용 가능한 MVP 완성
-- 추후 확장 가능한 구조 설계
+- 확장 가능한 RESTful 구조 설계
 
 ---
 
-## 10. 향후 확장 방향
+## 9. 무료 인프라 배포 계획 (MVP)
 
-- 반복 일정 기능
-- 그룹 공용 일정
-- 웹 버전 확장
-- 알림 세부 설정 (D-7, D-3, D-1 선택형)
-- 통계 및 히스토리 기능
+### 🎯 목표
+무료 티어 기반으로 MVP 운영 가능하도록 구성
 
 ---
 
-## 11. 무료 인프라 배포 계획 (MVP)
+### 인프라 구성
 
-목표: 비용을 최소화하여 MVP를 운영 가능하게 만드는 배포 전략과 구체적 작업 항목을 정리합니다. 전체 스택은 무료 티어 위주로 구성하되, 실사용(대량 메시지 발송 등)은 별도 비용이 필요함을 명시합니다.
-목표: 무료 티어로 MVP를 운영할 수 있도록 최소 구성만 명시합니다.
+- Backend: Spring Boot (Docker)
+- DB: Oracle Cloud Always Free VM + MySQL
+- CI/CD: GitHub Actions (SSH 배포)
+- Scheduler: GitHub Actions Scheduled Workflow
+- Push: FCM (무료)
+- Kakao 알림톡: 개발/테스트 가능 (실사용은 유료)
 
+---
 
-환경변수(권장): `JDBC_DATABASE_URL`, `DB_USERNAME`, `DB_PASSWORD`, `FCM_SERVER_KEY`, `KAKAO_API_KEY`, `DEPLOY_TOKEN`
+### 권장 환경변수
 
-핵심 순서(간단): DB 생성 → 환경변수로 연결 설정 → Dockerize → GitHub Actions로 빌드·배포 → Scheduled workflow로 알림 트리거
+```
+DB_HOST
+DB_PORT
+DB_NAME
+DB_USERNAME
+DB_PASSWORD
+FCM_SERVER_KEY
+KAKAO_API_KEY
+DEPLOY_TOKEN
+VM_USER
+VM_HOST
+VM_PATH
+```
 
-주의: 무료 티어의 성능/동시성 제약과 Kakao의 유료 전환 필요성을 고려하세요.
-목표: 항상 무료로 운영 가능한 DB(Oracle Cloud Always Free VM) 기준의 간단 배포 계획입니다.
+---
 
-- Backend: Spring Boot (Docker) — VM에 JAR 배포 또는 Docker 실행
-- Frontend: React → Vercel / Netlify
-- DB: Oracle Cloud Always Free VM에 설치한 MySQL (항상 무료 제공 조건에 따름)
-- CI/CD: GitHub Actions (빌드 · SSH로 VM에 배포)
-- Scheduler: GitHub Actions 스케줄러로 매일 알림 트리거
-- Push: FCM (Android 무료)
-- Kakao 알림톡: 개발/테스트 가능 — 실사용은 사업자 계정(유료)
+### 배포 순서
 
-환경변수(권장): `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD`, `FCM_SERVER_KEY`, `KAKAO_API_KEY`, `DEPLOY_TOKEN`, `VM_USER`, `VM_HOST`, `VM_PATH`
+1. Oracle VM 생성
+2. MySQL 설치
+3. Docker 설치
+4. Spring Boot Dockerize
+5. GitHub Actions로 빌드 및 SSH 배포
+6. Scheduled workflow로 D-day 알림 트리거
 
-핵심 순서(간단): Oracle VM 생성 → MySQL 설치 → 환경변수 설정 → Dockerize 또는 JAR 복사 → GitHub Actions로 빌드·SSH 배포 → Scheduled workflow로 알림 트리거
+---
 
-주의: Oracle의 Always Free 조건(소비량·리전 제한 등)을 준수해야 하며, VM 운영(보안·백업)은 직접 관리해야 합니다.
+⚠ 주의:
+- Oracle Always Free 사용 조건 준수
+- VM 보안 및 백업 직접 관리 필요
+- 카카오 알림톡은 사업자 전환 시 비용 발생
+
 ---
 
 © 2026 D-DAY SHARE
