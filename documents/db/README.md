@@ -213,3 +213,27 @@ CREATE TABLE schedule_notifications (
     ON DELETE CASCADE
 );
 ```
+
+<br>
+
+### 10. group_announcements
+```sql
+CREATE TABLE group_announcements (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    group_id BIGINT NOT NULL,
+    writer_id BIGINT NOT NULL,
+
+    title VARCHAR(150) NOT NULL,
+    content TEXT NOT NULL,
+
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_ga_group
+    FOREIGN KEY (group_id) REFERENCES groups(id)
+    ON DELETE CASCADE,
+
+    CONSTRAINT fk_ga_writer
+    FOREIGN KEY (writer_id) REFERENCES users(id)
+    ON DELETE CASCADE
+);
+```
